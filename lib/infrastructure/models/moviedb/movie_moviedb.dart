@@ -30,7 +30,7 @@ class MovieMovieDB {
         required this.voteAverage,
         required this.voteCount,
     });
-    // ! Conversion OBJ a JSON 
+
     factory MovieMovieDB.fromJson(Map<String, dynamic> json) => MovieMovieDB(
         adult: json["adult"] ?? false,
         backdropPath: json["backdrop_path"] ?? '' ,
