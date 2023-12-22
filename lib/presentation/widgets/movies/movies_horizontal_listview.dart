@@ -60,7 +60,7 @@ class _MovieHorizontalListiewState extends State<MovieHorizontalListiew> {
             physics: const BouncingScrollPhysics(),
             controller: scrollController,
             itemBuilder: (context, index) =>
-                _Slide(movies: widget.movies[index]),
+                FadeInRight(child: _Slide(movies: widget.movies[index])),
           )),
         ],
       ),
