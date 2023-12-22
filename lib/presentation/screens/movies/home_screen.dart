@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
       body: Scaffold(
         body: _HomeView(),
       ),
+     bottomNavigationBar: CustomBottomNavigation(),
     );
   }
 }
@@ -35,27 +36,23 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-
-    if (nowPlayingMovies.isEmpty) const CircularProgressIndicator();
+    final moviesSlicesShow = ref.watch(sliceShowProvider);
+    final moviesProvider = ref.watch(nowPlayingMoviesProvider);
+    if (moviesSlicesShow.isEmpty) const CircularProgressIndicator();
 
     return Column(
       children: [
         const CustomAppBar(),
-        Expanded(
-          child: ListView.builder(
-            itemCount: nowPlayingMovies.length,
-            itemBuilder: (context, index) {
-              final movie = nowPlayingMovies[index];
+        MoviesSlides(movies: moviesSlicesShow),
+        MovieHorizontalListiew(
+          movies: moviesProvider,
+          title: 'En cines',
+          subTitle: 'Lunes 20',
+          // ! Usamos el .read cuando estamos dentor de funciones o callbacks como este caso
+          loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage() ,
+        ),
 
-              Text(movie.title);
-              Text(movie.originalLanguage);
-              return ListTile(
-                title: Text(movie.title),
-              );
-            },
-          ),
-        )
+
       ],
     );
   }

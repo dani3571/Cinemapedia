@@ -5,6 +5,7 @@ import 'package:cinemapedia/config/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
+
 Future main() async {
   await dotenv.load(fileName: ".env");
   runApp(
