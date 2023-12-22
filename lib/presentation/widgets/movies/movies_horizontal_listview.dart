@@ -32,7 +32,6 @@ class _MovieHorizontalListiewState extends State<MovieHorizontalListiew> {
       // * Si la posicion del scroll pasa del maximo empieza a cargar mas peliculas
       if (scrollController.position.pixels + 200 >=
           scrollController.position.maxScrollExtent) {
-        print("Mas cosas");
         widget.loadNextPage!();
       }
     });
@@ -52,8 +51,8 @@ class _MovieHorizontalListiewState extends State<MovieHorizontalListiew> {
         children: [
           if (widget.title != null || widget.subTitle != null)
             _Title(
-                title: widget.title.toString(),
-                subTitle: widget.subTitle.toString()),
+                title: widget.title,
+                subTitle: widget.subTitle),
           Expanded(
               child: ListView.builder(
             itemCount: widget.movies.length,
