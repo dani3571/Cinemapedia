@@ -18,13 +18,13 @@ class MovieMapper {
       posterPath: (moviedb.posterPath != '') 
       ? 'https://image.tmdb.org/t/p/w500/${moviedb.posterPath}'
       : 'https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1702944000&semt=ais',
-      releaseDate: moviedb.releaseDate,
+      releaseDate: moviedb.releaseDate != null ? moviedb.releaseDate! : DateTime.now() ,
       title: moviedb.title,
       video: moviedb.video,
       voteAverage: moviedb.voteAverage,
       voteCount: moviedb.voteCount);
 
-    static Movie MovieDetaildToEntity(MovieDetails moviedb) => Movie(
+    static Movie movieDetaildToEntity(MovieDetails moviedb) => Movie(
 
     adult: moviedb.adult,
       backdropPath: (moviedb.backdropPath != '') 
