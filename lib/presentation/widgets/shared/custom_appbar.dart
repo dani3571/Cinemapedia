@@ -1,7 +1,9 @@
+import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/presentation/delegates/search_movie_delegate.dart';
-import 'package:cinemapedia/presentation/providers/movies/movies_repository_provider.dart';
+import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppBar extends ConsumerWidget {
   const CustomAppBar({super.key});
@@ -27,18 +29,24 @@ class CustomAppBar extends ConsumerWidget {
                   const Spacer(),
                   IconButton(
                       onPressed: () {
-                        // Esta funcion nos ayudara a realizar un buscador facilmente
+                        //     final moviesSearch = ref.read(movieRepositoryProvider);
+                        final searchMoviesQuery = ref.read(searchMoviesProvider);
+                        final searchedMovies = ref.read(searchedMoviesProvider);
+                        showSearch<Movie?>(
+                                query: searchMoviesQuery,
+                                context: context,
+                                delegate: SearchMovieDelegate(
+                                    initialMovies: searchedMovies,
+                                    searchMovies: ref
+                                        .read(searchedMoviesProvider.notifier)
+                                        .searchMoviesByQuery))
+                            .then((movie) {
+                          if (movie == null) return;
 
-                        final movieRepository = ref.read(movieRepositoryProvider);
-                        showSearch(
-                          context: context, 
-                          delegate: SearchMovieDelegate(
-                              searchMovies: movieRepository.searchMovies
-                          )
-                        );
-
-
-                      }, icon: const Icon(Icons.search_rounded))
+                          context.push('/movie/${movie.id}');
+                        });
+                      },
+                      icon: const Icon(Icons.search_rounded))
                 ],
               ),
             )));
