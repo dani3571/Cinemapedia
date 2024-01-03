@@ -100,7 +100,7 @@ class _MovieDetails extends StatelessWidget {
             ],
           ),
         ),
-        // TODO Mostrar actores ListView
+        // Actores ListView
         _ActorsByMovie(movieId: movie.id.toString()),
       ],
     );
@@ -172,6 +172,13 @@ class _CustomSliverAppBar extends StatelessWidget {
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7, // 70% de la pantalla
+      actions: [
+        IconButton(
+          onPressed: () {}, 
+          //icon: const Icon(Icons.favorite_border))
+            icon: const Icon(Icons.favorite_rounded))
+      ],
+      
       foregroundColor: Colors.white,
       shadowColor: Colors.red,
       flexibleSpace: FlexibleSpaceBar(
@@ -193,6 +200,11 @@ class _CustomSliverAppBar extends StatelessWidget {
             ),
           ),
           // ! GRADIENTE
+          const Gradient(
+              alignmentBegin: Alignment.topRight,
+              alignmentEnd: Alignment.bottomLeft,
+              stops: [0.0, 0.2],
+              colors: [Colors.black54, Colors.transparent]),
           const Gradient(
               alignmentBegin: Alignment.topCenter,
               alignmentEnd: Alignment.bottomCenter,
