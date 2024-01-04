@@ -6,7 +6,6 @@ final actorsByMovieProvider =
     StateNotifierProvider<ActorsByMovieNotifier, Map<String, List<Actor>>>(
         (ref) {
   final actorRepository = ref.watch(actorRepositoryProvider);
-
   return ActorsByMovieNotifier(getActors: actorRepository.getActorsByMovieId);
 });
 

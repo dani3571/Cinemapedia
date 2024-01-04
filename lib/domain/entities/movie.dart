@@ -1,4 +1,9 @@
+import 'package:isar/isar.dart';
+part 'movie.g.dart'; // Archivo que se generara de manera automatica es por ello que marca el error
+
+@collection
 class Movie {
+  Id? isarId; // autoincrementado por defecto
   final bool adult;
   final String backdropPath;
   final List<String> genreIds;

@@ -39,7 +39,9 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
           SliverList(
               delegate: SliverChildBuilderDelegate(
                   (context, index) => _MovieDetails(movie: movie),
-                  childCount: 1))
+                  childCount: 1
+              )
+          )
         ],
       ),
     );
