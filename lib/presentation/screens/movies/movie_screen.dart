@@ -39,9 +39,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
           SliverList(
               delegate: SliverChildBuilderDelegate(
                   (context, index) => _MovieDetails(movie: movie),
-                  childCount: 1
-              )
-          )
+                  childCount: 1))
         ],
       ),
     );
@@ -131,56 +129,76 @@ class _ActorsByMovie extends ConsumerWidget {
         itemBuilder: (context, index) {
           final actor = actors[index];
           return Container(
-            padding: const EdgeInsets.all(8.0),
-            width: 135,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FadeInRight(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      actor.profilePath,
-                      height: 180,
-                      width: 135,
-                      fit: BoxFit.cover,
+              padding: const EdgeInsets.all(8.0),
+              width: 135,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FadeInRight(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        actor.profilePath,
+                        height: 180,
+                        width: 135,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 5),
-                Text(actor.character ?? '', maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis),
-
-
-
-              ],
-            )
-          ); 
+                  const SizedBox(height: 5),
+                  Text(actor.character ?? '',
+                      maxLines: 2,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis),
+                ],
+              ));
         },
-        
       ),
     );
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+final isFavoriteProvider = FutureProvider.family((ref, int movieId) {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return localStorageRepository.isMovieFavorite(movieId);
+});
+
+class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
 
   const _CustomSliverAppBar({required this.movie});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     //Tomamos el tamaño de espacio del dispositivo
     final size = MediaQuery.of(context).size;
+    final isMovieFavorited = ref.watch(isFavoriteProvider(movie.id));
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7, // 70% de la pantalla
       actions: [
         IconButton(
-          onPressed: () {}, 
-          //icon: const Icon(Icons.favorite_border))
-            icon: const Icon(Icons.favorite_rounded))
+            onPressed: () async {
+              await ref
+                  .watch(localStorageRepositoryProvider)
+                  .toggleFavorite(movie);
+             
+              // Se vuelve a realizar la peticion con invalidate
+              ref.invalidate(isFavoriteProvider(movie.id));
+            },
+            icon: isMovieFavorited.when(
+              loading: () => const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2)),
+              data: (isFavorited) => isFavorited == true
+                  ? const Icon(
+                      Icons.favorite_rounded,
+                      color: Colors.red,
+                    )
+                  : const Icon(Icons.favorite_border),
+              error: (_, __) => throw UnimplementedError(),
+            ))
       ],
-      
+
       foregroundColor: Colors.white,
       shadowColor: Colors.red,
       flexibleSpace: FlexibleSpaceBar(
@@ -196,8 +214,8 @@ class _CustomSliverAppBar extends StatelessWidget {
               movie.posterPath,
               fit: BoxFit.cover,
               loadingBuilder: (context, child, loadingProgress) {
-                  if(loadingProgress!=null) return const SizedBox();
-                  return FadeIn(child: child);
+                if (loadingProgress != null) return const SizedBox();
+                return FadeIn(child: child);
               },
             ),
           ),

@@ -143,7 +143,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
     return FutureBuilder(
       future: searchMovies,
       builder: (context, snapshot) {
-      // TODO  print("Realizando peticion");
+     
         final movie = snapshot.data ?? [];
         return ListView.builder(
           itemCount: movie.length,
