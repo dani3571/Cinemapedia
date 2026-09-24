@@ -30,6 +30,9 @@ jobs:
       - name: Descargar dependencias
         run: flutter pub get
 
+      - name: Crear archivo env seguro
+        run: echo "THE_MOVIEDB_KEY=${{ secrets.THE_MOVIEDB_KEY }}" > .env
+        
       - name: Construir el APK
         run: flutter build apk --release
 
