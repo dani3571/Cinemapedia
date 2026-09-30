@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:cinemapedia/presentation/widgets/widgets.dart';
 
@@ -11,46 +12,47 @@ class HomeView extends ConsumerStatefulWidget {
   HomeViewState createState() => HomeViewState();
 }
 
-class HomeViewState extends ConsumerState<HomeView> {
+class HomeViewState extends ConsumerState<HomeView>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-    ref.read(polularMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
     ref.read(upCommingMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
-    
+    super.build(context);
     final initialLoading = ref.watch(initialLoadingProvider);
-    if(initialLoading) return const FullScreenLoader();
+    if (initialLoading) return const FullScreenLoader();
 
     final moviesSlicesShow = ref.watch(sliceShowProvider);
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-    final popularMovies = ref.watch(polularMoviesProvider);
+    // final popularMovies = ref.watch(polularMoviesProvider);
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
     final upComingMovies = ref.watch(upCommingMoviesProvider);
 
-
-    if (moviesSlicesShow.isEmpty) const CircularProgressIndicator();
     // ! Usamos el CustomScrollView con slivers para poder usar el SliverAppBar con la funcionalidad de floating para que el appBar siga al scroll
     return CustomScrollView(slivers: [
       const SliverAppBar(
         floating: true,
+        automaticallyImplyLeading: false,
         flexibleSpace: FlexibleSpaceBar(
-          title: CustomAppBar(),
-          centerTitle: false,
-          titlePadding: EdgeInsets.zero,
+        titlePadding: EdgeInsets.zero,
+        centerTitle: false,
+        title: CustomAppBar(),
+
         ),
       ),
       SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
         return Column(
           children: [
-            MoviesSlides(movies: moviesSlicesShow),
-            MovieHorizontalListiew(
+            MoviesSlideshow(movies: moviesSlicesShow),
+            MovieHorizontalListview(
               movies: nowPlayingMovies,
               title: 'En cines',
               subTitle: 'Lunes 20',
@@ -58,7 +60,8 @@ class HomeViewState extends ConsumerState<HomeView> {
               loadNextPage: () =>
                   ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
             ),
-            MovieHorizontalListiew(
+
+            MovieHorizontalListview(
               movies: upComingMovies,
               title: 'Proximamente',
               subTitle: 'En este mes',
@@ -66,15 +69,15 @@ class HomeViewState extends ConsumerState<HomeView> {
               loadNextPage: () =>
                   ref.read(upCommingMoviesProvider.notifier).loadNextPage(),
             ),
-            MovieHorizontalListiew(
-              movies: popularMovies,
-              title: 'Populares',
-              subTitle: null,
-              // ! Usamos el .read cuando estamos dentor de funciones o callbacks como este caso
-              loadNextPage: () =>
-                  ref.read(polularMoviesProvider.notifier).loadNextPage(),
-            ),
-            MovieHorizontalListiew(
+
+            //* Ya no estará aquí, ahora es parte del menú inferior
+            // MovieHorizontalListview(
+            //   movies: popularMovies,
+            //   title: 'Populares',
+            //   loadNextPage: () =>ref.read(popularMoviesProvider.notifier).loadNextPage()
+            // ),
+
+            MovieHorizontalListview(
               movies: topRatedMovies,
               title: 'Mejor calificadas',
               subTitle: 'Desde siempre',
@@ -88,4 +91,7 @@ class HomeViewState extends ConsumerState<HomeView> {
       }, childCount: 1)),
     ]);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
