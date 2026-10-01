@@ -14,6 +14,7 @@ class FavoritesView extends ConsumerStatefulWidget {
 class FavoritesViewState extends ConsumerState<FavoritesView> {
   bool isLastPage = false;
   bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -47,18 +48,21 @@ class FavoritesViewState extends ConsumerState<FavoritesView> {
                   style: TextStyle(fontSize: 30, color: colors.primary)),
               const Text("No tienes peliculas favoritas",
                   style: TextStyle(fontSize: 20, color: Colors.black45)),
-             
               const SizedBox(height: 20),
-           
-              FilledButton.tonal(onPressed: () {
-                context.go('/home/0');
-              },
-               child: const Text("Empieza a buscar"))
+              FilledButton.tonal(
+                  onPressed: () {
+                    context.go('/home/0');
+                  },
+                  child: const Text("Empieza a buscar"))
             ]),
       );
     }
+
     return Scaffold(
         body:
-            MoviesMasonry(movie: favoritesMovies, loadNextPage: loadNextPage));
+            MovieMasonry(movie: favoritesMovies, loadNextPage: loadNextPage));
   }
+
+  @override
+  bool get wantKeepAlive => true;  
 }
