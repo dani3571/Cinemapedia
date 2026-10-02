@@ -8,7 +8,8 @@ class FullScreenLoader extends StatelessWidget {
       'Comprando pipocas',
       'Cargando populares',
       'Cargando Up comming',
-      'Esto esta esperando mas de lo debido :(',
+      'Ya mero...',
+      'Esto está tardando más de lo esperado :(',
     ];
 
     return Stream.periodic(
