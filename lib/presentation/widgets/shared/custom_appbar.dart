@@ -24,12 +24,11 @@ class CustomAppBar extends ConsumerWidget {
                     Icons.movie_outlined,
                     color: colors.primary,
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 5),
                   Text("Cinemapedia", style: titleStyle),
                   const Spacer(),
                   IconButton(
                       onPressed: () {
-                        //     final moviesSearch = ref.read(movieRepositoryProvider);
                         final searchMoviesQuery = ref.read(searchMoviesProvider);
                         final searchedMovies = ref.read(searchedMoviesProvider);
                         showSearch<Movie?>(
