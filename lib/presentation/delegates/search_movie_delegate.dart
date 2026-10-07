@@ -60,7 +60,6 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
                   icon: const Icon(Icons.refresh_rounded)),
             );
           }
-          //  if (query.toString().isNotEmpty)
 
           return FadeIn(
             child: IconButton(
@@ -137,23 +136,6 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
     );
   }
 }
-/*
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder(
-      future: searchMovies,
-      builder: (context, snapshot) {
-     
-        final movie = snapshot.data ?? [];
-        return ListView.builder(
-          itemCount: movie.length,
-          itemBuilder: (context, index) => _MovieSeachItem(movie: movie[index], onMovieSelected: close),
-        );
-      },
-    );
-  }
-}
- */
 
 class _MovieSeachItem extends StatelessWidget {
   final Movie movie;
@@ -172,20 +154,17 @@ class _MovieSeachItem extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-                width: size.width * 0.3,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
-                    movie.posterPath,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress != null) {
-                        return const Center(
-                            child: CircularProgressIndicator(strokeWidth: 2));
-                      }
-                      return FadeIn(child: child);
-                    },
-                  ),
-                )),
+              width: size.width * 0.2,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: FadeInImage(
+                    height: 130,
+                    fit: BoxFit.cover,
+                    image: NetworkImage(movie.posterPath),
+                    placeholder:
+                        const AssetImage('assets/loaders/bottle-loader.gif'),
+                  )),
+            ),
             const SizedBox(width: 10),
             SizedBox(
                 width: size.width * 0.6,
