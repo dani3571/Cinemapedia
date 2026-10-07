@@ -10,13 +10,14 @@ final nowPlayingMoviesProvider =
   );
 });
 
-final polularMoviesProvider =
-    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final fetchMoreMovies = ref.watch(movieRepositoryProvider).getPopular;
+
+final popularMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  final fetchMoreMovies = ref.watch( movieRepositoryProvider ).getPopular;
   return MoviesNotifier(
-    fetchMoreMovies: fetchMoreMovies,
+    fetchMoreMovies: fetchMoreMovies
   );
 });
+
 
 final upCommingMoviesProvider =
     StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
